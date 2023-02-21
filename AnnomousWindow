@@ -1,1 +1,222 @@
-Hello this is domeyFile
+string s='tejpal singh rathore';
+system.debug(s.split(' '));
+
+string str = 'I want to remove the last word.';
+integer lastIndex = str.lastIndexOf(' '); 
+str = str.substring(0, lastIndex);
+system.debug(str);
+
+
+set<id> contentDocumentIds = new set<id>();
+            list<ContentDocumentLink> contentDoc=[Select ContentDocumentId from ContentDocumentLink where LinkedEntityId IN ('005BZ000000ptaRYAQ')  order by SystemModstamp desc Limit 3];
+            System.debug(contentDoc);
+            
+            for(ContentDocumentLink conDocument:contentDoc){
+                contentDocumentIds.add(conDocument.ContentDocumentId);
+            }
+            system.debug(contentDocumentIds);
+
+
+HttpRequest req = new HttpRequest();
+    req.setMethod('POST');     
+	string folderName='NewFolder';
+    req.setEndpoint('callout:NameCredUda'+'/drive/v3/files');
+    //req.setHeader('Authorization', 'Bearer '+accessToken);
+    req.setHeader('content-type', 'application/json');
+    String body = '{"name" : "'+ folderName +'","mimeType" : "application/vnd.google-apps.folder"}';
+    req.setTimeout(60*1000);
+    req.setBody(body);
+    Http http = new Http();
+    HttpResponse res = http.send(req);
+    System.debug('===== Response==='+ res.getBody());
+
+
+Http h = new Http();
+HttpRequest req = new HttpRequest();
+req.setEndpoint('callout:Gdrive_NamedCred'+label.Folder_Structure);
+req.setMethod('GET');
+//req.setHeader('Authorization', 'Bearer ' + accessToken);
+HttpResponse res = h.send(req);
+system.debug('res---'+res);
+if (res.getStatusCode() == 200) {
+    Map<String, Object> response = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+    List<Object> files = (List<Object>) response.get('files');
+    for (Object file : files) {
+        Map<String, Object> folder = (Map<String, Object>) file;
+        String folderId = (String) folder.get('id');
+        String folderName = (String) folder.get('name');
+        System.debug(folderId + ': ' + folderName);
+    }
+}
+
+
+BusinessLicenseApplicationHandler.callOutForSingleFolder('ABCAKDHAY','0f0BZ0000002mPcYAI');
+
+
+
+QueryingMetaDataForGoogleDrive.customMetadata();
+
+
+BusinessLicenseApplicationHandler.handleAfterInsertOrganics({0f0BZ0000002nV7YAI},'ABC','AKSHAY');
+
+
+
+System.abortJob('707BZ000006sqzn'); 
+
+
+
+
+
+
+
+
+
+list<BusinessLicenseApplication> lstBLA =[select id,name,LicenseType.Name, LicenseType.id 
+                                          			from BusinessLicenseApplication where Id ='0f0BZ0000002mPcYAI'];
+
+
+system.debug('lstBLA--'+lstBLA[0].LicenseTypeId);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  string folderName='APPLICATION';
+  Http http = new Http();
+  HttpRequest req = new HttpRequest();
+ 
+  System.debug('full path ##### '+ listURL);
+  req.setMethod('GET');
+  req.setEndpoint('callout:GoogleDriveNC'+listURL);
+  req.setHeader('Content-Type', 'application/json');
+  HttpResponse res = http.send(req);
+
+
+  string folderName='APPLICATION';
+  Http http = new Http();
+  HttpRequest req = new HttpRequest();
+  req.setMethod('GET');
+  String listURL = '/drive/v3/files?q=mimeType=\'application/vnd.google-apps.folder\'+and+trashed+=false';
+  listURL += 'and name=' folderName;
+ system.debug('listURL'+listURL);
+  req.setEndpoint('callout:GoogleDriveNC'+listURL);
+  req.setHeader('Content-Type', 'application/json');
+  HttpResponse res = http.send(req);
+  system.debug('res---'+res);
+  if (res.getStatusCode() == 200) {
+    Map<String, Object> result = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+    List<Object> files = (List<Object>) result.get('files');
+   // return !files.isEmpty();
+  } else {
+   // return false;
+  }
+
+	String folderName = 'APPLICATION';
+    String listURL = '/drive/v3/files?q=mimeType=\'application/vnd.google-apps.folder\'+and+trashed+=false';
+    listURL += '+and+name+='+folderName;
+    system.debug('listURL'+listURL);
+    //listURL += '&fields=*&supportsAllDrives=true&includeItemsFromAllDrives=true';    
+	//HttpResponse response = sendGETRequest('GoogleDriveNC', listURL );
+   // system.debug('RESULT ### '+ response);
+   // public static HttpResponse sendGETRequest( String namedCred, String url ) {
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('callout:GoogleDriveNC'+listURL);
+        request.setMethod('GET');
+       // return http.send(request);
+   // } 
+
+
+
+
+
+
+	HttpRequest req = new HttpRequest();
+    req.setMethod('POST');     
+	string folderName='NewFolder';
+    req.setEndpoint('callout:GoogleDriveNC'+'/drive/v3/files');
+    //req.setHeader('Authorization', 'Bearer '+accessToken);
+    req.setHeader('content-type', 'application/json');
+    String body = '{"name" : "'+ folderName +'","mimeType" : "application/vnd.google-apps.folder"}';
+    req.setTimeout(60*1000);
+    req.setBody(body);
+    Http http = new Http();
+    HttpResponse res = http.send(req);
+    System.debug('===== Response==='+ res.getBody());
+
+
+  		 Http http = new Http();
+        HttpRequest req= new HttpRequest();
+        req.setEndpoint('callout:GoogleDriveNC/drive/v2/files/14Jm8gPMVMaGPr1d4n1QJqT77kc6z7NzM/children');
+        req.setMethod('GET');
+        HttpResponse resp = http.send(req);
+        system.debug(resp.getBody());
+
+//https://www.googleapis.com/drive/v3/files?q=mimeType='application/vnd.google-apps.folder'andtrashed=falseandname='ABC'
+		String FolderName = '\'Application and Narrative\'';
+		FolderName = EncodingUtil.urlEncode(FolderName, 'UTF-8');
+ 		Http http = new Http();
+        HttpRequest req= new HttpRequest();
+        req.setEndpoint('callout:NameCredUda/drive/v3/files?q=mimeType=\'application/vnd.google-apps.folder\'andtrashed=falseandname='+FolderName+'');
+        req.setMethod('GET');
+        HttpResponse resp = http.send(req);
+        system.debug(resp.getBody());
+
+string ABC ='AAA';
+//String FolderName = '\'Additional\'';
+//system.debug(FolderName);
+
+string fin= '\''+ABC+'\'';
+system.debug('fin'+fin);
+
+
+string s=system.Label.ABC_Comapny;
+List<String> strList = s.split(',');
+system.debug(strList.size());
+for(string s1:strList){
+    system.debug(s1);
+    string ss='system.Label.'+s1;
+    
+    system.debug(ss);
+}
+ /  
+list<id> blaId = new list<id>();
+blaId.add('0f0BZ0000002oVhYAI');
+CreatingFolderStructureUsingMetaData.callOutForSingleFolder('Org',blaId);
+
+DateTime startTime = DateTime.newInstance(2022, 12, 25, 0, 0, 0);
+DateTime endTime = startTime.addDays(1).addSeconds(-1);
+
+List<Account> filteredRecords = [SELECT Id, Name, createdDate FROM Account WHERE createdDate >= :startTime AND createdDate <= :endTime];
+
+list<id> blaId = new list<id>();
+blaId.add('0f0BZ0000002oVhYAI');
+TestingCustomObject queueableInstance = new TestingCustomObject(blaId,'testing Account');
+Id jobId = System.enqueueJob(queueableInstance);
+
+
+
+String formattedDate = DateTime.now().format('dd MMM yyyy');
+system.debug('formattedDate'+formattedDate);
